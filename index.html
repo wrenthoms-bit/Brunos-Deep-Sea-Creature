@@ -195,6 +195,7 @@
       const [referenceOpacity, setReferenceOpacity] = useState(0.8);
       const [modelOpacity, setModelOpacity] = useState(0.5); // opacity of solid mesh in match view
       const [autoRotate, setAutoRotate] = useState(true);
+      const [showCinematicTheater, setShowCinematicTheater] = useState(false);
 
       // Model Shape Parameters (Tweakable by Bruno to match his sketch!)
       const [params, setParams] = useState({
@@ -1162,8 +1163,104 @@
       }, [referenceOpacity]);
 
       return (
-        <div class="flex flex-col lg:flex-row h-full w-full overflow-hidden">
+        <div class="flex flex-col lg:flex-row h-full w-full overflow-hidden relative">
           
+          {/* CINEMATIC THEATER MODAL */}
+          {showCinematicTheater && (
+            <div class="absolute inset-0 bg-black/95 backdrop-blur-xl z-50 flex flex-col items-center justify-center p-4 overflow-y-auto">
+              <div class="max-w-4xl w-full bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl relative flex flex-col">
+                
+                {/* Header Banner */}
+                <div class="p-6 border-b border-neutral-800 bg-black/40 flex items-center justify-between">
+                  <div>
+                    <span class="text-xs font-bold text-red-500 uppercase tracking-widest block">Cinematic Media Presentation</span>
+                    <h3 class="text-xl font-extrabold text-[#F5ECD7]">Bruno's Deep Sea Hybrid Cinematic Showcase</h3>
+                  </div>
+                  <button 
+                    onClick={() => setShowCinematicTheater(false)}
+                    class="py-2 px-4 bg-neutral-800 hover:bg-neutral-700 active:scale-95 text-xs font-bold rounded-xl border border-neutral-700 transition-all text-neutral-300 hover:text-white"
+                  >
+                    ✕ Close Theater
+                  </button>
+                </div>
+
+                {/* Content Grid (Image & Video) */}
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                  
+                  {/* Left Column: Cinematic Render Image */}
+                  <div class="space-y-3">
+                    <span class="text-xs font-extrabold text-neutral-400 tracking-wider block uppercase">📸 1. High-Fidelity 3D Render</span>
+                    <div class="aspect-[4/3] bg-neutral-950 rounded-2xl overflow-hidden border border-neutral-800 relative group">
+                      <img 
+                        src="Gemini_Generated_Image_ (2).png" 
+                        alt="Bruno's Creature Cinematic Render" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null; 
+                          e.target.parentNode.innerHTML = `
+                            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-neutral-950">
+                              <span class="text-3xl mb-2">📸</span>
+                              <p class="text-xs font-bold text-neutral-300">Cinematic Render Placeholder</p>
+                              <p class="text-[10px] text-neutral-500 mt-2 max-w-xs leading-relaxed">
+                                Upload <strong>"Gemini_Generated_Image_ (2).png"</strong> to your GitHub repository root to display his colorful concept rendering here!
+                              </p>
+                            </div>
+                          `;
+                        }}
+                      />
+                    </div>
+                    <p class="text-[11px] text-neutral-400 leading-relaxed italic text-center">
+                      "Goblin shark meets Giant Squid—Featuring custom countershading skin textures, biological wet sheen highlights, and long crimson feeding tentacles."
+                    </p>
+                  </div>
+
+                  {/* Right Column: Motion Tracked Video */}
+                  <div class="space-y-3">
+                    <span class="text-xs font-extrabold text-neutral-400 tracking-wider block uppercase">🎬 2. Abyssal Motion Sequence</span>
+                    <div class="aspect-[4/3] bg-neutral-950 rounded-2xl overflow-hidden border border-neutral-800 relative">
+                      <video 
+                        src="Using_the_provided_reference_i.mp4" 
+                        controls 
+                        loop 
+                        autoPlay 
+                        muted
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.parentNode.innerHTML = `
+                            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-neutral-950">
+                              <span class="text-3xl mb-2">🎬</span>
+                              <p class="text-xs font-bold text-neutral-300">Abyssal Motion Video Placeholder</p>
+                              <p class="text-[10px] text-neutral-500 mt-2 max-w-xs leading-relaxed">
+                                Drag and drop <strong>"Using_the_provided_reference_i.mp4"</strong> to your GitHub repository root to watch his animated hybrid swim here!
+                              </p>
+                            </div>
+                          `;
+                        }}
+                      />
+                    </div>
+                    <p class="text-[11px] text-neutral-400 leading-relaxed italic text-center">
+                      "Cinematic underwater simulation tracking Bruno's creature drifting elegantly through the dark depths with rippling ivory arms."
+                    </p>
+                  </div>
+
+                </div>
+
+                {/* Footer instructions */}
+                <div class="p-5 border-t border-neutral-800 bg-neutral-950/60 text-xs text-neutral-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <span>💡 Sharing this? Read the **Sharing Guide** to get these live on GitHub!</span>
+                  <button 
+                    onClick={() => setShowCinematicTheater(false)}
+                    class="py-2 px-5 bg-gradient-to-r from-amber-600 to-yellow-600 font-extrabold rounded-xl text-xs text-[#F5ECD7]"
+                  >
+                    Return to 3D Editor
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          )}
+
           {/* LEFT SIDEBAR CONTROLS */}
           <div class="w-full lg:w-[420px] bg-neutral-950 border-b lg:border-b-0 lg:border-r border-neutral-800 flex flex-col h-[40%] lg:h-full z-10 select-none shadow-2xl">
             
@@ -1202,6 +1299,24 @@
             {/* TAB CONTAINER */}
             <div class="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-6">
               
+              {/* CINEMATIC THEATER SHORTCUT */}
+              <div class="bg-gradient-to-br from-neutral-900 to-neutral-950 p-4 rounded-2xl border border-neutral-800 space-y-3 shadow-xl">
+                <div>
+                  <h4 class="text-xs font-bold text-red-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <span class="animate-pulse">🔴</span> Cinematic Presentation Mode
+                  </h4>
+                  <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+                    Watch Bruno's creature brought to life inside the cinematic underwater movie sequences!
+                  </p>
+                </div>
+                <button 
+                  onClick={() => setShowCinematicTheater(true)}
+                  class="w-full py-2.5 px-4 bg-gradient-to-r from-red-600 to-rose-700 hover:opacity-90 active:scale-95 text-white rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-md shadow-red-950/40"
+                >
+                  <span>🎬</span> Open Cinematic Theater
+                </button>
+              </div>
+
               {/* STAGE & VIEW SWITCHER */}
               <div class="space-y-3">
                 <label class="text-xs font-bold text-neutral-400 uppercase tracking-widest">
